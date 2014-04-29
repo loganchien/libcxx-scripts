@@ -1,0 +1,8 @@
+*.swp
+*~
+objs
+objs-arm
+out
+out-arm
+libcxx
+libcxxabi
