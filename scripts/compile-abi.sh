@@ -40,6 +40,23 @@ for FILE in ${LIBCXXABI_SRC}/src/*.cpp; do
   $CXX -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
 done
 
+if [ "${CROSS_COMPILING}" = "arm" ]; then
+  LIBUNWIND_FILES="
+  ${LIBCXXABI_SRC}/src/Unwind/Unwind-arm.cpp
+  ${LIBCXXABI_SRC}/src/Unwind/Unwind-sjlj.c
+  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1-gcc-ext.c
+  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1.c
+  ${LIBCXXABI_SRC}/src/Unwind/UnwindRegistersRestore.S
+  ${LIBCXXABI_SRC}/src/Unwind/UnwindRegistersSave.S
+  ${LIBCXXABI_SRC}/src/Unwind/libunwind.cpp
+  "
+
+  for FILE in ${LIBUNWIND_FILES}; do
+    echo "compile: ${FILE}"
+    $CXX -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+  done
+fi
+
 echo "link: ${OUTPUT_FULL}"
 $CC -o "${OUTPUT_FULL}" *.o $LDFLAGS $CXXFLAGS
 
