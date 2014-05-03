@@ -15,7 +15,11 @@ CXXFLAGS="-std=c++11 -fstrict-aliasing -Wstrict-aliasing=2 \
           -Wstrict-aliasing=2 -Wstrict-overflow=4 -Wunused-parameter \
           -Wnewline-eof -fPIC"
 
-CXXFLAGS="-isystem ${LIBCXX_SRC}/include ${CXXFLAGS}"
+# libc++ headers
+CXXFLAGS="${CXXFLAGS} -isystem ${LIBCXX_SRC}/include"
+
+# debug flags
+CXXFLAGS="${CXXFLAGS} -O0 -g"
 
 LDFLAGS="-shared -nodefaultlibs -Wl,-soname,libc++abi.so.1 \
          -lpthread -lrt -lc"
@@ -33,7 +37,7 @@ cd "${LIBCXXABI_OBJ}"
 
 for FILE in ${LIBCXXABI_SRC}/src/*.cpp; do
   echo "compile: ${FILE}"
-  $CXX -c -g -O3 $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+  $CXX -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
 done
 
 echo "link: ${OUTPUT_FULL}"

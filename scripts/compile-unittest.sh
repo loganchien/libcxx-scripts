@@ -5,10 +5,11 @@ source "${SCRIPT_DIR}/config.sh"
 
 CXXFLAGS="-nostdinc++
           -std=c++11
-          -isystem ${LIBCXX_SRC}/include
-          -isystem ${OUT_DIR}/include"
+          -isystem ${OUT_DIR}/include
+          -isystem ${OUT_DIR}/include/c++/v1"
 
-CXXFLAGS="${CXXFLAGS} -isystem ${OUT_DIR}/include/c++/v1"
+# debug flags
+CXXFLAGS="${CXXFLAGS} -O0 -g"
 
 LDFLAGS="-L${OUT_DIR}/lib -nodefaultlibs
          -lc++ -lpthread -lc++abi -lm -lc -lgcc_s -lgcc"
