@@ -49,6 +49,10 @@ To build all libraries from scratch for ARM, you can use:
 
     $ CROSS_COMPILING=arm ./scripts/compile-all.sh
 
+To build all libraries from scratch for ARM with libunwind, you can use:
+
+    $ CROSS_COMPILING=arm ENABLE_LIBUNWIND=1 ./scripts/compile-all.sh
+
 The compiled binaries is in the `out-arm` directories.  You can copy them to
 your ARM testing device.  Besides, you can run the libcxxabi unit test with
 
