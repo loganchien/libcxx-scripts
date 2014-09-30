@@ -110,3 +110,13 @@ to build libcxxabi, libcxx, libcxxabi unit tests, respectively,
     $ CROSS_COMPILING=arm ./scripts/compile-abi.sh
     $ CROSS_COMPILING=arm ./scripts/compile-libcxx.sh
     $ CROSS_COMPILING=arm ./scripts/compile-unittest.sh
+
+To cross-compile your own program with libc++ and libc++abi:
+
+    $ clang++ -target arm-linux-gnueabihf \
+              -isystem out-arm/include \
+              -isystem out-arm/include/c++/v1 \
+              -isystem /usr/arm-linux-gnueabihf/include \
+              -Lout-arm/lib \
+              -lc++ -lpthread -lc++abi -lm -lc -lgcc_s -lgcc \
+              your_source_file.cpp
