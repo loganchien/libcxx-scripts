@@ -8,7 +8,5 @@ if [ ! -d "${LIBCXX_SRC}" ]; then
 fi
 
 if [ ! -d "${LIBCXXABI_SRC}" ]; then
-  git clone "https://github.com/loganchien/libcxxabi" "libcxxabi"
-  cd "${LIBCXXABI_SRC}"
-  git checkout "arm-libcxxabi-patches"
+  git clone "http://llvm.org/git/libcxxabi.git" "libcxxabi"
 fi
