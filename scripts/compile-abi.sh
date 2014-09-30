@@ -31,6 +31,13 @@ LDFLAGS="-shared -nodefaultlibs -Wl,-soname,libc++abi.so.1 \
          -lpthread -lrt -ldl -lc"
 
 if [ "${CROSS_COMPILING}" = "arm" ]; then
+  # HACK: find cross compiling system include path
+  SYSTEM_INCLUDE="/usr/arm-linux-gnueabihf/include"
+  if [ -d "${SYSTEM_INCLUDE}" ]; then
+    CFLAGS="${CFLAGS} -isystem ${SYSTEM_INCLUDE}"
+    CXXFLAGS="${CXXFLAGS} -isystem ${SYSTEM_INCLUDE}"
+  fi
+
   CFLAGS="-target arm-linux-gnueabihf ${CFLAGS}"
   CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
   LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"

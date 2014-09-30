@@ -15,6 +15,12 @@ LDFLAGS="-L${OUT_DIR}/lib -nodefaultlibs
          -lc++ -lpthread -lc++abi -lm -lc -lgcc_s -lgcc"
 
 if [ "${CROSS_COMPILING}" = "arm" ]; then
+  # HACK: find cross compiling system include path
+  SYSTEM_INCLUDE="/usr/arm-linux-gnueabihf/include"
+  if [ -d "${SYSTEM_INCLUDE}" ]; then
+    CXXFLAGS="${CXXFLAGS} -isystem ${SYSTEM_INCLUDE}"
+  fi
+
   CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
   LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
 fi
