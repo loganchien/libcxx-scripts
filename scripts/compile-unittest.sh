@@ -15,7 +15,7 @@ LDFLAGS="-L${OUT_DIR}/lib -nodefaultlibs
          -lc++ -lpthread -lc++abi -lm -lc -lgcc_s -lgcc"
 
 if [ "${CROSS_COMPILING}" = "arm" ]; then
-  CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS} -funwind-tables"
+  CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
   LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
 fi
 

@@ -31,8 +31,8 @@ LDFLAGS="-shared -nodefaultlibs -Wl,-soname,libc++abi.so.1 \
          -lpthread -lrt -ldl -lc"
 
 if [ "${CROSS_COMPILING}" = "arm" ]; then
-  CFLAGS="-target arm-linux-gnueabihf ${CFLAGS} -funwind-tables"
-  CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS} -funwind-tables"
+  CFLAGS="-target arm-linux-gnueabihf ${CFLAGS}"
+  CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
   LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
 fi
 
