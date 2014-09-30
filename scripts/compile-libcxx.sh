@@ -19,7 +19,7 @@ elif [ "${CROSS_COMPILING}" = "arm" ]; then
     "-DCMAKE_CROSSCOMPILING=True"
     "-DCMAKE_BUILD_TYPE=Release"
     "-DCMAKE_INSTALL_PREFIX=${OUT_DIR}"
-    "-DCMAKE_CXX_FLAGS=-target armv7a-linux-gnueabihf -mcpu=cortex-a9 -mfloat-abi=hard -ccc-gcc-name arm-linux-gnueabihf-gcc"
+    "-DCMAKE_CXX_FLAGS=-target arm-linux-gnueabihf -mfloat-abi=hard -ccc-gcc-name arm-linux-gnueabihf-gcc-4.7"
   )
 fi
 
