@@ -8,10 +8,52 @@ These scripts are created for my libcxxabi ARM EHABI support development.
 Dependencies
 ------------
 
-Before you can run the script, please make sure that you have clang and
-clang++ in your $PATH.  It is suggested to have 3.5 at least.
+These scripts are tested under Debian Wheezy and Ubuntu 14.04 (host build).
+You will might need some modification for other platforms or toolchains.
 
-Besides, you will need cmake to build libc++ properly.
+You will need `bintuils`, `gcc`, `g++`, `cmake`, and `clang` to build the
+library.  The version of clang should be **3.5** or newer.
+
+### Debian Wheezy
+
+Add following line to `/etc/apt/sources.list`:
+
+    # Emdebian for cross-compiling gcc toolchain
+    deb http://ftp.uk.debian.org/emdebian/toolchains unstable main
+
+    # LLVM apt prebuilt binary
+    deb http://llvm.org/apt/wheezy/ llvm-toolchain-wheezy main
+    deb-src http://llvm.org/apt/wheezy/ llvm-toolchain-wheezy main
+
+Install the dependencies:
+
+    $ sudo apt-get install binutils clang-3.5 cmake gcc make
+
+To cross-compile for ARM, install following dependencies as well:
+
+    $ sudo apt-get install binutils-multiarch \
+                           gcc-4.7-arm-linux-gnueabihf \
+                           g++-4.7-arm-linux-gnueabihf
+
+### Ubuntu 14.04
+
+Build clang 3.5: You have to build your own copy of clang 3.5 from the official
+LLVM 3.5 source code.  The `clang-3.5` package from Ubuntu APT repository won't
+work.
+
+Install the dependencies:
+
+    $ sudo apt-get install binutils cmake gcc g++ make
+
+To cross-compile for ARM, install the following dependencies:
+
+    $ sudo apt-get install binutils-multiarch \
+                           gcc-4.7-arm-linux-gnueabihf \
+                           g++-4.7-arm-linux-gnueabihf
+
+NOTE: Although I can compile the libraries successfully, but I can't run the
+output executables because I don't have ARM Ubuntu installation.  It is
+suggested to cross-compile with Debian Wheezy instead.
 
 
 Build for x86
