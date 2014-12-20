@@ -43,6 +43,26 @@ if [ "${CROSS_COMPILING}" = "arm" ]; then
   LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
 fi
 
+# check for __cxa_thread_atexit_impl()
+set +e
+
+cat > test.cpp <<__EOF__
+extern "C" int __cxa_thread_atexit_impl(void (*dtor)(void *), void *, void *);
+int main() {
+  __cxa_thread_atexit_impl(0, 0, 0);
+}
+__EOF__
+
+${CXX} ${CFLAGS} ${CXXFLAGS} test.cpp -o /dev/null > /dev/null 2>&1
+
+if [ $? = 0 ]; then
+  CXXFLAGS="${CXXFLAGS} -DHAVE___CXA_THREAD_ATEXIT_IMPL=1"
+fi
+
+rm test.cpp a.out > /dev/null 2>&1
+
+set -e
+
 if [ -e "${LIBCXXABI_OBJ}" ]; then
   rm -rf "${LIBCXXABI_OBJ}"
 fi
