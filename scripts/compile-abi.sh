@@ -25,6 +25,11 @@ CFLAGS="${CFLAGS} -isystem ${LIBCXX_SRC}/include"
 # debug flags
 CFLAGS="${CFLAGS} -O0 -g"
 
+
+if [ "${ENABLE_LIBUNWIND}" = 1 ]; then
+  CFLAGS="$CFLAGS -DLIBCXXABI_USE_LLVM_UNWINDER=1"
+fi
+
 CXXFLAGS="-std=c++11 ${CFLAGS}"
 
 LDFLAGS="-shared -nodefaultlibs -Wl,-soname,libc++abi.so.1 \
