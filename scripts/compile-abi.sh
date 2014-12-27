@@ -17,7 +17,7 @@ CFLAGS="-fstrict-aliasing -Wstrict-aliasing=2 \
         -Wmissing-field-initializers -Wchar-subscripts -Wmismatched-tags \
         -Wmissing-braces -Wshorten-64-to-32 -Wsign-compare \
         -Wstrict-aliasing=2 -Wstrict-overflow=4 -Wunused-parameter \
-        -Wnewline-eof -fPIC -fno-integrated-as"
+        -Wnewline-eof -fPIC -fno-integrated-as -funwind-tables"
 
 # libc++ headers
 CFLAGS="${CFLAGS} -isystem ${LIBCXX_SRC}/include"
