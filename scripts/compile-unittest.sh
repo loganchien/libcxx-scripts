@@ -15,8 +15,13 @@ CXXFLAGS="-nostdinc++
 
 CXXFLAGS="${CXXFLAGS} -O0 -g"
 
+if [ -e "${OUT_DIR}/lib/libunwind.so" ]; then
+LDFLAGS="-L${OUT_DIR}/lib -nodefaultlibs
+         -lc++ -lpthread -lc++abi -lunwind -lm -lc -lgcc_s -lgcc"
+else
 LDFLAGS="-L${OUT_DIR}/lib -nodefaultlibs
          -lc++ -lpthread -lc++abi -lm -lc -lgcc_s -lgcc"
+fi
 
 
 #-------------------------------------------------------------------------------
