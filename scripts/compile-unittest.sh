@@ -25,11 +25,6 @@ LDFLAGS="-L${OUT_DIR}/lib -nodefaultlibs
 
 case "${CROSS_COMPILING}" in
 arm)
-  # Extra failed unit tests for ARM.
-  if [ "${ENABLE_LIBUNWIND}" = 1 ]; then
-    XFAIL_RUN="${XFAIL_RUN} backtrace_test"
-  fi
-
   # Find cross compiling system include path.
   SYSTEM_INCLUDE="/usr/arm-linux-gnueabihf/include"
   if [ -d "${SYSTEM_INCLUDE}" ]; then
