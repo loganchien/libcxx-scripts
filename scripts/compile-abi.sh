@@ -83,6 +83,9 @@ done
 if [ "${CROSS_COMPILING}" = "arm" -a "${ENABLE_LIBUNWIND}" = "1" ]; then
   LIBUNWIND_FILES="
   ${LIBCXXABI_SRC}/src/Unwind/Unwind-EHABI.cpp
+  ${LIBCXXABI_SRC}/src/Unwind/Unwind-sjlj.cpp
+  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1-gcc-ext.cpp
+  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1.cpp
   ${LIBCXXABI_SRC}/src/Unwind/libunwind.cpp
   "
 
@@ -92,9 +95,6 @@ if [ "${CROSS_COMPILING}" = "arm" -a "${ENABLE_LIBUNWIND}" = "1" ]; then
   done
 
   LIBUNWIND_FILES="
-  ${LIBCXXABI_SRC}/src/Unwind/Unwind-sjlj.c
-  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1-gcc-ext.c
-  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1.c
   ${LIBCXXABI_SRC}/src/Unwind/UnwindRegistersRestore.S
   ${LIBCXXABI_SRC}/src/Unwind/UnwindRegistersSave.S
   "
