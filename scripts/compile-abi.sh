@@ -81,24 +81,22 @@ for FILE in ${LIBCXXABI_SRC}/src/*.cpp; do
 done
 
 if [ "${CROSS_COMPILING}" = "arm" -a "${ENABLE_LIBUNWIND}" = "1" ]; then
-  LIBUNWIND_FILES="
-  ${LIBCXXABI_SRC}/src/Unwind/Unwind-EHABI.cpp
-  ${LIBCXXABI_SRC}/src/Unwind/Unwind-sjlj.cpp
-  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1-gcc-ext.cpp
-  ${LIBCXXABI_SRC}/src/Unwind/UnwindLevel1.cpp
-  ${LIBCXXABI_SRC}/src/Unwind/libunwind.cpp
-  "
-
+  LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.cpp")"
   for FILE in ${LIBUNWIND_FILES}; do
+    if [ "$(basename "${FILE}")" = "Unwind_AppleExtras.cpp" ]; then
+      continue
+    fi
     echo "compile: ${FILE}"
     ${CXX} -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
   done
 
-  LIBUNWIND_FILES="
-  ${LIBCXXABI_SRC}/src/Unwind/UnwindRegistersRestore.S
-  ${LIBCXXABI_SRC}/src/Unwind/UnwindRegistersSave.S
-  "
+  LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.c")"
+  for FILE in ${LIBUNWIND_FILES}; do
+    echo "compile: ${FILE}"
+    ${CC} -c $CFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+  done
 
+  LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.S")"
   for FILE in ${LIBUNWIND_FILES}; do
     echo "compile: ${FILE}"
     ${CC} -c $CFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
