@@ -13,11 +13,20 @@ if [ -z "${CROSS_COMPILING}" ]; then
     "-DCMAKE_INSTALL_PREFIX=${OUT_DIR}"
   )
 elif [ "${CROSS_COMPILING}" = "arm" ]; then
+  EXTRA_CXX_FLAGS+=" -mfloat-abi=hard"
+
   # HACK: find cross compiling system include path
   SYSTEM_INCLUDE="/usr/arm-linux-gnueabihf/include"
   if [ -d "${SYSTEM_INCLUDE}" ]; then
-    EXTRA_CXX_FLAGS="-isystem ${SYSTEM_INCLUDE}"
+    EXTRA_CXX_FLAGS+=" -isystem ${SYSTEM_INCLUDE}"
   fi
+
+  # Clang cross-compiler flags
+  case ${CXX} in
+    *clang*)
+      EXTRA_CXX_FLAGS+=" -target arm-linux-gnueabihf -ccc-gcc-name arm-linux-gnueabihf-gcc-4.7"
+      ;;
+  esac;
 
   CMAKE_FLAGS=(
     "-DCMAKE_SYSTEM_PROCESSOR=arm"
@@ -25,7 +34,7 @@ elif [ "${CROSS_COMPILING}" = "arm" ]; then
     "-DCMAKE_CROSSCOMPILING=True"
     "-DCMAKE_BUILD_TYPE=Release"
     "-DCMAKE_INSTALL_PREFIX=${OUT_DIR}"
-    "-DCMAKE_CXX_FLAGS=-target arm-linux-gnueabihf -mfloat-abi=hard -ccc-gcc-name arm-linux-gnueabihf-gcc-4.7 ${EXTRA_CXX_FLAGS}"
+    "-DCMAKE_CXX_FLAGS=${EXTRA_CXX_FLAGS}"
   )
 fi
 

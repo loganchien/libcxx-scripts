@@ -22,5 +22,10 @@ LIBCXX_OBJ="${OBJ_DIR}/libcxx"
 LIBCXXABI_OBJ="${OBJ_DIR}/libcxxabi"
 LIBCXXABI_UNITTEST_OUT="${OUT_DIR}/unittests"
 
-export CC="clang"
-export CXX="clang++"
+if [ -z "${CC}" ]; then
+  export CC="clang"
+fi
+
+if [ -z "${CXX}" ]; then
+  export CXX="clang++"
+fi

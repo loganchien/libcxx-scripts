@@ -37,8 +37,12 @@ arm)
   fi
 
   # Cross compiling flag
-  CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
-  LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
+  case "${CC}" in
+    *clang*)
+    CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
+    LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
+    ;;
+  esac
   ;;
 esac
 

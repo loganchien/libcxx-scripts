@@ -3,9 +3,6 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
 source "${SCRIPT_DIR}/config.sh"
 
-CC="clang"
-CXX="clang++"
-
 # debug flags
 EXTRA_C_FLAGS="-O0 -g"
 EXTRA_CXX_FLAGS="-O0 -g"

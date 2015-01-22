@@ -8,17 +8,20 @@ OUTPUT_MAJOR="1"
 OUTPUT_MINOR="0"
 OUTPUT_FULL="${OUTPUT}.${OUTPUT_MAJOR}.${OUTPUT_MINOR}"
 
-CC="clang"
-
-CXX="clang++"
-
 CFLAGS="-fstrict-aliasing -Wstrict-aliasing=2 \
         -Wsign-conversion -Wshadow -Wconversion -Wunused-variable \
-        -Wmissing-field-initializers -Wchar-subscripts -Wmismatched-tags \
-        -Wmissing-braces -Wshorten-64-to-32 -Wsign-compare \
+        -Wmissing-field-initializers -Wchar-subscripts \
+        -Wmissing-braces -Wsign-compare \
         -Wstrict-aliasing=2 -Wstrict-overflow=4 -Wunused-parameter \
-        -Wnewline-eof -fPIC -fno-integrated-as -funwind-tables \
+        -fPIC -funwind-tables \
         -D__STDC_FORMAT_MACROS=1"
+
+case "${CC}" in
+  *clang*)
+    CFLAGS+="-Wmismatched-tags -Wshorten-64-to-32 -Wnewline-eof \
+             -fno-integrated-as"
+    ;;
+esac
 
 # libc++ headers
 CFLAGS="${CFLAGS} -isystem ${LIBCXX_SRC}/include"
@@ -44,9 +47,13 @@ if [ "${CROSS_COMPILING}" = "arm" ]; then
     CXXFLAGS="${CXXFLAGS} -isystem ${SYSTEM_INCLUDE}"
   fi
 
-  CFLAGS="-target arm-linux-gnueabihf ${CFLAGS}"
-  CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
-  LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
+  case "${CC}" in
+    *clang*)
+      CFLAGS="-target arm-linux-gnueabihf ${CFLAGS}"
+      CXXFLAGS="-target arm-linux-gnueabihf ${CXXFLAGS}"
+      LDFLAGS="-target arm-linux-gnueabihf ${LDFLAGS}"
+      ;;
+  esac
 fi
 
 # check for __cxa_thread_atexit_impl()
