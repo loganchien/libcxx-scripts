@@ -119,6 +119,10 @@ cp "${LIBCXXABI_OBJ}/${OUTPUT_FULL}" "${OUT_DIR}/lib"
 (cd "${OUT_DIR}/lib"; ln -sf "${OUTPUT_FULL}" "${OUTPUT}.${OUTPUT_MAJOR}")
 (cd "${OUT_DIR}/lib"; ln -sf "${OUTPUT_FULL}" "${OUTPUT}")
 
+mkdir -p "${OUT_DIR}/include"
+find "${LIBCXXABI_SRC}/include" -maxdepth 1 -name '*.h' -exec \
+  cp {} "${OUT_DIR}/include" \;
+
 rm -r "${LIBCXXABI_OBJ}"
 
 echo done.

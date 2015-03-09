@@ -8,9 +8,12 @@ export LDFLAGS="-L${OUT_DIR}/lib"
 mkdir -p "${LIBCXX_OBJ}"
 cd "${LIBCXX_OBJ}"
 
+EXTRA_CXX_FLAGS="-I${OUT_DIR}/include"
+
 if [ -z "${CROSS_COMPILING}" ]; then
   CMAKE_FLAGS=(
     "-DCMAKE_INSTALL_PREFIX=${OUT_DIR}"
+    "-DCMAKE_CXX_FLAGS=${EXTRA_CXX_FLAGS}"
   )
 elif [ "${CROSS_COMPILING}" = "arm" ]; then
   EXTRA_CXX_FLAGS+=" -mfloat-abi=hard"
@@ -24,7 +27,8 @@ elif [ "${CROSS_COMPILING}" = "arm" ]; then
   # Clang cross-compiler flags
   case ${CXX} in
     *clang*)
-      EXTRA_CXX_FLAGS+=" -target arm-linux-gnueabihf -ccc-gcc-name arm-linux-gnueabihf-gcc-4.7"
+      EXTRA_CXX_FLAGS+=" -target arm-linux-gnueabihf"
+      EXTRA_CXX_FLAGS+=" -ccc-gcc-name arm-linux-gnueabihf-gcc-4.7"
       ;;
   esac;
 
