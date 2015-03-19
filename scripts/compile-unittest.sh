@@ -95,6 +95,21 @@ for src in ${srcs}; do
   ${CXX} -o "${LIBCXXABI_UNITTEST_OUT}/${exe}" ${CXXFLAGS} ${LDFLAGS} ${src}
 done
 
+# Add libunwind test
+if [ "${ENABLE_LIBUNWIND}" = 1 -a -d "${LIBCXXABI_SRC}/test/Unwind" ]; then
+  unw_srcs="$(ls "${LIBCXXABI_SRC}/test/Unwind" | grep '.*\.cpp')"
+  for i in ${XFAIL_COMPILE}; do
+    unw_srcs="$(echo "${unw_srcs}" | grep -v "$i")"
+  done
+
+  for src in ${unw_srcs}; do
+    src="${LIBCXXABI_SRC}/test/Unwind/${src}"
+    exe="$(basename "${src/.cpp/}")"
+    echo "compiling ${exe} ..."
+    ${CXX} -o "${LIBCXXABI_UNITTEST_OUT}/${exe}" ${CXXFLAGS} ${LDFLAGS} ${src}
+  done
+fi
+
 
 #-------------------------------------------------------------------------------
 # Create the scripts to run all test cases
