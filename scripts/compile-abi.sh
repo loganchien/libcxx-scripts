@@ -87,7 +87,7 @@ for FILE in ${LIBCXXABI_SRC}/src/*.cpp; do
   ${CXX} -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
 done
 
-if [ "${CROSS_COMPILING}" = "arm" -a "${ENABLE_LIBUNWIND}" = "1" ]; then
+if [ "${ENABLE_LIBUNWIND}" = "1" ]; then
   LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.cpp")"
   for FILE in ${LIBUNWIND_FILES}; do
     if [ "$(basename "${FILE}")" = "Unwind_AppleExtras.cpp" ]; then
