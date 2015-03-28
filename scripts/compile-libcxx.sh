@@ -44,7 +44,7 @@ fi
 
 CMAKE_FLAGS+=(
   "-DLIBCXX_CXX_ABI=libcxxabi"
-  "-DLIBCXX_LIBCXXABI_INCLUDE_PATHS=${LIBCXXABI_SRC}/include"
+  "-DLIBCXX_CXX_ABI_INCLUDE_PATHS=${LIBCXXABI_SRC}/include"
 )
 
 cmake -G "Unix Makefiles" "${CMAKE_FLAGS[@]}" "${LIBCXX_SRC}"
