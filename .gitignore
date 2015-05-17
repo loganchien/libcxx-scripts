@@ -1,8 +1,9 @@
 *.swp
 *~
-objs
-objs-arm
-out
-out-arm
-libcxx
-libcxxabi
+/objs
+/objs-arm
+/out
+/out-arm
+/libcxx
+/libcxxabi
+/libunwind
