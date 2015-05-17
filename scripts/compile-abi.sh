@@ -82,31 +82,36 @@ fi
 mkdir -p "${LIBCXXABI_OBJ}"
 cd "${LIBCXXABI_OBJ}"
 
+CXXFLAGS="${CXXFLAGS} -I${LIBCXXABI_SRC}/include"
+CXXFLAGS="${CXXFLAGS} -I${LIBUNWIND_SRC}/include"
+CFLAGS="${CFLAGS} -I${LIBCXXABI_SRC}/include"
+CFLAGS="${CFLAGS} -I${LIBUNWIND_SRC}/include"
+
 for FILE in ${LIBCXXABI_SRC}/src/*.cpp; do
   echo "compile: ${FILE}"
-  ${CXX} -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+  ${CXX} -c $CXXFLAGS $OPTIONS $FILE
 done
 
 if [ "${ENABLE_LIBUNWIND}" = "1" ]; then
-  LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.cpp")"
+  LIBUNWIND_FILES="$(find "${LIBUNWIND_SRC}/src" -name "*.cpp")"
   for FILE in ${LIBUNWIND_FILES}; do
     if [ "$(basename "${FILE}")" = "Unwind_AppleExtras.cpp" ]; then
       continue
     fi
     echo "compile: ${FILE}"
-    ${CXX} -c $CXXFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+    ${CXX} -c $CXXFLAGS $OPTIONS $FILE
   done
 
-  LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.c")"
+  LIBUNWIND_FILES="$(find "${LIBUNWIND_SRC}/src" -name "*.c")"
   for FILE in ${LIBUNWIND_FILES}; do
     echo "compile: ${FILE}"
-    ${CC} -c $CFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+    ${CC} -c $CFLAGS $OPTIONS $FILE
   done
 
-  LIBUNWIND_FILES="$(find "${LIBCXXABI_SRC}/src/Unwind" -name "*.S")"
+  LIBUNWIND_FILES="$(find "${LIBUNWIND_SRC}/src" -name "*.S")"
   for FILE in ${LIBUNWIND_FILES}; do
     echo "compile: ${FILE}"
-    ${CC} -c $CFLAGS "-I${LIBCXXABI_SRC}/include" $OPTIONS $FILE
+    ${CC} -c $CFLAGS $OPTIONS $FILE
   done
 fi
 
