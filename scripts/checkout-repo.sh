@@ -10,3 +10,7 @@ fi
 if [ ! -d "${LIBCXXABI_SRC}" ]; then
   git clone "http://llvm.org/git/libcxxabi.git" "libcxxabi"
 fi
+
+if [ ! -d "${LIBUNWIND_SRC}" ]; then
+  git clone "http://llvm.org/git/libunwind.git" "libunwind"
+fi

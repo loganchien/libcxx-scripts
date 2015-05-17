@@ -9,6 +9,7 @@ ROOT="$(cd "${SCRIPT_DIR}/.."; pwd)"
 
 LIBCXX_SRC="${ROOT}/libcxx"
 LIBCXXABI_SRC="${ROOT}/libcxxabi"
+LIBUNWIND_SRC="${ROOT}/libunwind"
 
 if [ "${CROSS_COMPILING}" = "arm" ]; then
   OBJ_DIR="${ROOT}/objs-arm"
@@ -21,6 +22,7 @@ fi
 LIBCXX_OBJ="${OBJ_DIR}/libcxx"
 LIBCXXABI_OBJ="${OBJ_DIR}/libcxxabi"
 LIBCXXABI_UNITTEST_OUT="${OUT_DIR}/unittests"
+LIBUNWIND_OBJ="${OBJ_DIR}/libunwind"
 
 if [ -z "${CC}" ]; then
   export CC="clang"
