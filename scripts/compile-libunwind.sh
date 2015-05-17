@@ -3,21 +3,30 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
 source "${SCRIPT_DIR}/config.sh"
 
+if [ "${ENABLE_LIBUNWIND}" != "1" ]; then
+  exit
+fi
+
 # debug flags
 EXTRA_C_FLAGS="-O0 -g"
 EXTRA_CXX_FLAGS="-O0 -g"
 
 # common flags
 CMAKE_FLAGS=(
-  "-DCMAKE_BUILD_TYPE=Debug"
-  "-DCMAKE_CXX_COMPILER=clang++"
-  "-DCMAKE_C_COMPILER=clang"
   "-DCMAKE_INSTALL_PREFIX=${OUT_DIR}"
-  "-DLIBCXXABI_LIBCXX_INCLUDES=${LIBCXX_SRC}/include"
+  "-DCMAKE_BUILD_TYPE=Debug"
+  "-DCMAKE_C_COMPILER=clang"
+  "-DCMAKE_CXX_COMPILER=clang++"
   "-DLLVM_ABI_BREAKING_CHECKS=WITH_ASSERTS"
 )
 
+# add libc++abi to header search path (for __cxxabi_config.h)
+EXTRA_CXX_FLAGS="${EXTRA_CXX_FLAGS} -I${LIBCXXABI_SRC}/include"
+EXTRA_C_FLAGS="${EXTRA_C_FLAGS} -I${LIBCXXABI_SRC}/include"
+
 if [ "${CROSS_COMPILING}" = "arm" ]; then
+  echo "WARNING: $0 is experimental.  It may not work with cross-compiling."
+
   # HACK: find cross compiling system include path
   DIR="/usr/arm-linux-gnueabihf/include"
   if [ -d "${DIR}" ]; then
@@ -42,36 +51,28 @@ if [ "${CROSS_COMPILING}" = "arm" ]; then
 
   EXTRA_C_FLAGS="--target=arm-linux-gnueabihf ${EXTRA_C_FLAGS}"
   EXTRA_CXX_FLAGS="--target=arm-linux-gnueabihf ${EXTRA_CXX_FLAGS}"
-  EXTRA_LD_FLAGS="-L${OUT_DIR}/lib"
 
   CMAKE_FLAGS+=(
     "-DCMAKE_SYSTEM_PROCESSOR=arm"
     "-DCMAKE_SYSTEM_NAME=Linux"
     "-DCMAKE_CROSSCOMPILING=True"
-    "-DCMAKE_EXE_LINKER_FLAGS=${EXTRA_LD_FLAGS} -lgcc_s"
-    "-DCMAKE_SHARED_LINKER_FLAGS=${EXTRA_LD_FLAGS} -lgcc_s"
-    "-DCMAKE_MODULE_LINKER_FLAGS=${EXTRA_LD_FLAGS}"
   )
 fi
 
-if [ "${ENABLE_LIBUNWIND}" = "1" ]; then
-  CMAKE_FLAGS+=(
-    "-DLIBCXXABI_USE_LLVM_UNWINDER=1"
-    "-DLIBCXXABI_LIBUNWIND_INCLUDES=${LIBUNWIND_SRC}/include"
-    "-DLIBCXXABI_LIBUNWIND_SOURCES=${LIBUNWIND_SRC}/src"
-    "-DLIBUNWIND_ENABLE_SHARED=1"
-  )
-fi
-
+# libunwind flags
 CMAKE_FLAGS+=(
+  "-DLIBUNWIND_ENABLE_ASSERTIONS=1"
+  "-DLIBUNWIND_ENABLE_PEDANTIC=1"
+  "-DLIBUNWIND_ENABLE_SHARED=1"
   "-DCMAKE_C_FLAGS=${EXTRA_C_FLAGS}"
   "-DCMAKE_CXX_FLAGS=${EXTRA_CXX_FLAGS}"
 )
+#"-DLIBUNWIND_ENABLE_WERROR=1"
 
-mkdir -p "${LIBCXXABI_OBJ}"
-cd "${LIBCXXABI_OBJ}"
+mkdir -p "${LIBUNWIND_OBJ}"
+cd "${LIBUNWIND_OBJ}"
 
-cmake -G "Unix Makefiles" "${CMAKE_FLAGS[@]}" "${LIBCXXABI_SRC}"
+cmake -G "Unix Makefiles" "${CMAKE_FLAGS[@]}" "${LIBUNWIND_SRC}"
 
 make -j16
 
