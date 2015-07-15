@@ -96,17 +96,18 @@ for src in ${srcs}; do
 done
 
 # Add libunwind test
-if [ "${ENABLE_LIBUNWIND}" = 1 -a -d "${LIBCXXABI_SRC}/test/Unwind" ]; then
-  unw_srcs="$(ls "${LIBCXXABI_SRC}/test/Unwind" | grep '.*\.cpp')"
+if [ "${ENABLE_LIBUNWIND}" = 1 -a -d "${LIBUNWIND_SRC}/test" ]; then
+  unw_srcs="$(ls "${LIBUNWIND_SRC}/test" | grep '.*\.cpp')"
   for i in ${XFAIL_COMPILE}; do
     unw_srcs="$(echo "${unw_srcs}" | grep -v "$i")"
   done
 
   for src in ${unw_srcs}; do
-    src="${LIBCXXABI_SRC}/test/Unwind/${src}"
+    src="${LIBUNWIND_SRC}/test/${src}"
     exe="$(basename "${src/.cpp/}")"
     echo "compiling ${exe} ..."
-    ${CXX} -o "${LIBCXXABI_UNITTEST_OUT}/${exe}" ${CXXFLAGS} ${LDFLAGS} ${src}
+    ${CXX} -o "${LIBCXXABI_UNITTEST_OUT}/${exe}" -I"${LIBUNWIND_SRC}/include" \
+      ${CXXFLAGS} ${LDFLAGS} ${src}
   done
 fi
 
